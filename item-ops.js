@@ -95,46 +95,77 @@ const dynamodb = new AWS.DynamoDB();
 // });
 
 //multiple item crud operations
-docClient.batchWrite({
-    RequestItems: {
-        'demo': [
-            {
-                PutRequest: {
-                    Item: {
-                        user_id: 'amar1',
-                        timestamp: 1,
-                        title: 'Title 11',
-                        content: 'Content 11'
-                    }
-                }
-            },
-            {
-                DeleteRequest: {
-                    Key: {
-                        user_id: 'madhu',
-                        timestamp: 3
-                    }
-                }
-            },
-            {
-                PutRequest: {
-                    Item: {
-                        user_id: 'sukesh',
-                        timestamp: 2,
-                        title: 'Title 22',
-                        content: 'Content 22'
-                    }
-                }
+// docClient.batchWrite({
+//     RequestItems: {
+//         'demo': [
+//             {
+//                 PutRequest: {
+//                     Item: {
+//                         user_id: 'amar1',
+//                         timestamp: 1,
+//                         title: 'Title 11',
+//                         content: 'Content 11'
+//                     }
+//                 }
+//             },
+//             {
+//                 DeleteRequest: {
+//                     Key: {
+//                         user_id: 'madhu',
+//                         timestamp: 3
+//                     }
+//                 }
+//             },
+//             {
+//                 PutRequest: {
+//                     Item: {
+//                         user_id: 'sukesh',
+//                         timestamp: 2,
+//                         title: 'Title 22',
+//                         content: 'Content 22'
+//                     }
+//                 }
 
-            }
-        ]
-    }
-}, (err, data) => {
-    if (err) {
-        console.log(err);
-    } else {
-        console.log(data);
-    }
-});
+//             }
+//         ]
+//     }
+// }, (err, data) => {
+//     if (err) {
+//         console.log(err);
+//     } else {
+//         console.log(data);
+//     }
+// });
 
 //batchwrite cannot update items, to update item use updateitem
+
+//read record
+// docClient.get({
+//         TableName: 'demo',
+//         Key: {
+//             user_id: 'amar1',
+//             timestamp: 1
+//         }
+//     }, (err, data)=>{
+//         if(err) {
+//             console.log(err);
+//         } else {
+//             console.log(data);
+//         }
+// });
+
+
+//query record
+docClient.query({
+        TableName: 'demo',
+        KeyConditionExpression: "user_id= :uid",
+        ExpressionAttributeValues:{
+            ":uid": "amar1"
+        }
+    }, (err, data)=>{
+        if(err) {
+            console.log(err);
+        } else {
+            console.log(data);
+        }
+    });
